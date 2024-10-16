@@ -53,7 +53,8 @@ btnShow.addEventListener('click', () => {
             .then(response => response.json())
             .then(data => {
                 comList.innerHTML = data.map(commune => {
-                    return `<li>${commune.nom}</li>`;
+                    console.log(commune);
+                    return `<li>${commune.nom} (${commune.population})</li>`;
                 }).join('');
             })
             .catch(error => console.error('Erreur:', error));

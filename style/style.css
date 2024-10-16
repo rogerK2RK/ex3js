@@ -1,0 +1,18 @@
+select, .bx-content, #showCommunes {
+    width: 100%;
+    border-radius: 5px;
+}
+
+select, #showCommunes {
+    padding: 10px 20px;
+} 
+
+#depart-list {
+    margin-bottom: 50px;
+}
+
+button {
+    background-color: rgb(144, 200, 238);
+    border-radius: 5px;
+    border: 1px solid grey;
+}
