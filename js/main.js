@@ -3,8 +3,6 @@ const regtList = document.querySelector('#region-list');
 const departList = document.querySelector('#depart-list');
 const comList = document.querySelector('#commune-list');
 const btnShow = document.querySelector('#showCommunes');
-const divGeoMess = document.querySelector('#message-geo');
-const btnGeo = document.querySelector('#get-geoloca');
 
 let codeDepart;
 
@@ -67,6 +65,9 @@ btnShow.addEventListener('click', () => {
 
 
 ///EX 2 Géolocalisation 
+const divGeoMess = document.querySelector('#message-geo');
+const btnGeo = document.querySelector('#get-geoloca');
+
 btnGeo.addEventListener('click', () => {
     navigator.geolocation.getCurrentPosition(position => {
         const { latitude, longitude } = position.coords;
@@ -89,4 +90,39 @@ btnGeo.addEventListener('click', () => {
         console.error(`An error occurred: ${error.message}`);
         divGeoMess.innerHTML = `<p>Erreur de géolocalisation : ${error.message}</p>`;
     });
+});
+
+// Ex3 Cinéma
+
+const btnCine = document.querySelector("#get-cinema");
+const cineList = document.querySelector("#cine-list");
+const baseUrlCine = 'https://data.culture.gouv.fr/api/records/1.0/search/?dataset=etablissements-cinematographiques';
+
+
+
+btnCine.addEventListener('click', () => {
+    fetch(`${baseUrlCine}`)
+        .then(response => response.json())
+        .then(data => {
+            //Trier les cinéma
+            const sortedCinemas = data.records.sort((a, b) => {
+                const fauteuilsA = a.fields.fauteuils || 0;  // Nombre de fauteuils du cinéma A
+                const fauteuilsB = b.fields.fauteuils || 0;  // Nombre de fauteuils du cinéma B
+                return fauteuilsB - fauteuilsA;  // Trier par ordre décroissant
+            });
+
+            cineList.innerHTML = sortedCinemas.map(cinema => {
+                console.log(cinema.fields);
+                const cinemaNom = cinema.fields.nom || 'Nom inconnu';
+                const adresse = cinema.fields.adresse || 'Adresse inconnu';
+                const ville = cinema.fields.unite_urbaine || 'Ville inconnu';
+                const fauteuils = cinema.fields.fauteuils || 'Fauteuils inconnu';
+                
+                return `<li> Nom :  ${cinemaNom} ; Adresse : ${adresse} ; Ville : ${ville} ; Fauteuils : ${fauteuils}</li>`;
+            }).join('');
+        })
+        .catch(error => {
+            console.error('Erreur:', error);
+            cineList.innerHTML = `<p>Erreur lors de la récupération des cinémas.</p>`;
+        });
 });
