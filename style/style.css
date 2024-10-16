@@ -1,9 +1,9 @@
-select, .bx-content, #showCommunes {
+select, .bx-content, #showCommunes, #get-geoloca, #get-cinema {
     width: 100%;
     border-radius: 5px;
 }
 
-select, #showCommunes {
+select, #showCommunes, #get-geoloca, #get-cinema {
     padding: 10px 20px;
 } 
 
@@ -11,8 +11,17 @@ select, #showCommunes {
     margin-bottom: 50px;
 }
 
-button {
+button, #get-geoloca, #get-cinema {
     background-color: rgb(144, 200, 238);
     border-radius: 5px;
     border: 1px solid grey;
+}
+
+#get-geoloca {
+    background-color: rgb(238, 144, 144);
+}
+
+#get-cinema {
+    background-color: rgb(144, 238, 183);
+    margin-top: 15px;
 }

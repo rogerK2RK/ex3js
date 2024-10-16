@@ -3,6 +3,8 @@ const regtList = document.querySelector('#region-list');
 const departList = document.querySelector('#depart-list');
 const comList = document.querySelector('#commune-list');
 const btnShow = document.querySelector('#showCommunes');
+const divGeoMess = document.querySelector('#message-geo');
+const btnGeo = document.querySelector('#get-geoloca');
 
 let codeDepart;
 
@@ -62,3 +64,29 @@ btnShow.addEventListener('click', () => {
         console.log('Aucun département sélectionné.');
     }
 })
+
+
+///EX 2 Géolocalisation 
+btnGeo.addEventListener('click', () => {
+    navigator.geolocation.getCurrentPosition(position => {
+        const { latitude, longitude } = position.coords;
+        console.log(`Latitude: ${latitude}, Longitude: ${longitude}`);
+
+        const nominatimUrl = `https://nominatim.openstreetmap.org/reverse?lat=${latitude}&lon=${longitude}&format=json`;
+
+        fetch(nominatimUrl)
+            .then(response => response.json())
+            .then(data => {
+                const address = data.display_name;
+                divGeoMess.innerHTML = `<p>Je suis à l'adresse suivante : ${address}</p>`;
+            })
+            .catch(error => {
+                console.error('Erreur lors de la récupération de l\'adresse :', error);
+                divGeoMess.innerHTML = `<p>Impossible de récupérer l'adresse.</p>`;
+            });
+
+    }, error => {
+        console.error(`An error occurred: ${error.message}`);
+        divGeoMess.innerHTML = `<p>Erreur de géolocalisation : ${error.message}</p>`;
+    });
+});
